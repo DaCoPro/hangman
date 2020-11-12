@@ -24,12 +24,27 @@ const letterBtns = document.querySelectorAll('section > button');
 document.querySelector('section')
   .addEventListener('click', handleLetterClick);
 
-  document.getElementById('replay')
+document.getElementById('replay')
   .addEventListener('click', init);
 
 
 /*----- functions -----*/
 init();
+
+function init() {
+  const rndIdx = Math.floor(Math.random() * WORDS.length);
+  secretWord = WORDS[rndIdx];
+  guessWord = '';
+  // init guessWord with underscores for each char in secretWord
+  for (let char of secretWord) {
+    guessWord += (char === ' ') ? ' ' : '_';
+  }
+  // Using regular expression
+  // guessWord = secretWord.replace(/[A-Z]/g, '_');
+  gameStatus = null;
+  wrongLetters = [];
+  render();
+}
 
 // in response to user interaction, update state and call render
 function handleLetterClick(evt) {
@@ -50,17 +65,6 @@ function handleLetterClick(evt) {
   }
   gameStatus = getGameStatus();
   render();
-}
-
-function getGameStatus() {
-  if (guessWord === secretWord) return '👍';
-  if (wrongLetters.length === FATAL_NUM_GUESSES) return '👎';
-  return null;
-  // if (guessWord === secretWord) {
-  //   return '👍';
-  // } else if (wrongLetters.length === FATAL_NUM_GUESSES) {
-  //   return '👎';
-  // }
 }
 
 // render transfers all state to the DOM
@@ -93,22 +97,18 @@ function renderButtons() {
     } else if (wrongLetters.includes(letter)) {
       btn.className = 'wrong-letter';
     } else {
-      btn.className = '';
+      btn.className = '';.
     }
   });
 }
 
-function init() {
-  const rndIdx = Math.floor(Math.random() * WORDS.length);
-  secretWord = WORDS[rndIdx];
-  guessWord = '';
-  // init guessWord with underscores for each char in secretWord
-  for (let char of secretWord) {
-    guessWord += (char === ' ') ? ' ' : '_';
-  }
-  // Using regular expression
-  // guessWord = secretWord.replace(/[A-Z]/g, '_');
-  gameStatus = null;
-  wrongLetters = [];
-  render();
+function getGameStatus() {
+  if (guessWord === secretWord) return '👍';
+  if (wrongLetters.length === FATAL_NUM_GUESSES) return '👎';
+  return null;
+  // if (guessWord === secretWord) {
+  //   return '👍';
+  // } else if (wrongLetters.length === FATAL_NUM_GUESSES) {
+  //   return '👎';
+  // }
 }
